@@ -16,7 +16,6 @@
             touch-action: manipulation;
         }
 
-        /* Raining Background Hearts */
         .heart-fall {
             position: fixed; top: -10%;
             font-size: 20px; color: #ff4d6d;
@@ -32,7 +31,14 @@
             position: relative; z-index: 10;
         }
 
-        .gif-box img { width: 100%; max-width: 180px; border-radius: 20px; margin-bottom: 10px; }
+        /* GIF Styling with Fallback */
+        .gif-box { 
+            min-height: 150px; 
+            display: flex; justify-content: center; align-items: center; 
+            font-size: 50px;
+        }
+        .gif-box img { width: 100%; max-width: 180px; border-radius: 20px; }
+        
         h1 { font-family: 'Dancing Script', cursive; color: #ff4d6d; font-size: 2.2rem; margin: 10px 0; }
         
         .btn-box {
@@ -49,7 +55,6 @@
         #yesBtn { background: #ff4d6d; color: white; }
         #noBtn { background: #ffb3c1; color: white; position: absolute; transition: 0.1s; }
 
-        /* Falling Game Styles */
         #game-canvas {
             background: #fff9fa; border: 3px dashed #ffccd5;
             border-radius: 25px; margin: 15px 0;
@@ -63,13 +68,21 @@
         }
 
         .hidden { display: none; }
+        .shake { animation: shake 0.5s; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
     </style>
 </head>
 <body>
     <div id="heartPool"></div>
 
     <div id="page1" class="container">
-        <div class="gif-box"><img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpndnN6NXR6cnp6cnp6cnp6cnp6cnp6cnp6cnp6cnp6cnp6cnp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/L4lvBpHW2fAXYpSFAp/giphy.gif"></div>
+        <div class="gif-box">
+            <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpndnN6NXR6cnp6cnp6cnp6cnp6cnp6cnp6cnp6cnp6cnp6cnp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/L4lvBpHW2fAXYpSFAp/giphy.gif" alt="❤️">
+        </div>
         <h1>Hi Muddu... ❤️</h1>
         <p>I have a secret question... Do you love me?</p>
         <div class="btn-box" id="btnContainer">
@@ -87,16 +100,20 @@
 
     <div id="page3" class="container hidden">
         <div id="quiz-content">
-            <div class="gif-box"><img id="quiz-gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3RscW9mYmtndXhyZmx3enR6bnR6bnR6bnR6bnR6bnR6bnR6bnR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdclIYAnYToSx/giphy.gif"></div>
+            <div class="gif-box">
+                <img id="quiz-gif" src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3RscW9mYmtndXhyZmx3enR6bnR6bnR6bnR6bnR6bnR6bnR6bnR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdclIYAnYToSx/giphy.gif" alt="❤️">
+            </div>
             <h1 id="quiz-q">Question 1</h1>
-            <p id="quiz-msg" style="color: #ff4d6d; height: 20px;"></p>
+            <p id="quiz-msg" style="color: #ff4d6d; height: 20px; font-weight: bold;"></p>
             <button class="quiz-btn" id="opt1" onclick="checkAnswer(true)"></button>
             <button class="quiz-btn" id="opt2" onclick="checkAnswer(false)"></button>
         </div>
     </div>
 
     <div id="page4" class="container hidden">
-        <div class="gif-box"><img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3RscW9mYmtndXhyZmx3enR6bnR6bnR6bnR6bnR6bnR6bnR6bnR6bnR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/m8X6pL8Z0lA6MUM0jN/giphy.gif"></div>
+        <div class="gif-box">
+            <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3RscW9mYmtndXhyZmx3enR6bnR6bnR6bnR6bnR6bnR6bnR6bnR6bnR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/m8X6pL8Z0lA6MUM0jN/giphy.gif" alt="❤️">
+        </div>
         <h1>My Dearest Muddu ❤️</h1>
         <p style="text-align: left; line-height: 1.6; color: #444;">
             I know you sometimes feel like you don't deserve this much effort. But to me, you are everything. Even though I'm away, you are the only thought that keeps me smiling. You don't have to "react"—just being you is the greatest gift. I love you forever.
@@ -132,12 +149,16 @@
         function checkAnswer(isOpt1) {
             const data = quizData[currentQuiz];
             const selected = isOpt1 ? 1 : 2;
+            const content = document.getElementById('quiz-content');
+            
             if(selected === data.correct) {
                 currentQuiz++;
                 if(currentQuiz >= quizData.length) nextPage(4);
                 else loadQuiz();
             } else {
                 document.getElementById('quiz-msg').innerText = "Nahh!! Try again Madam Jii 😉";
+                content.classList.add('shake');
+                setTimeout(() => content.classList.remove('shake'), 500);
             }
         }
 
@@ -152,17 +173,16 @@
             const canvas = document.getElementById('game-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
-            
             let heartY = 0; let heartX = Math.random() * (canvas.width - 40) + 20;
-            let speed = 3;
+            let speed = 4;
 
             function animate() {
                 if (score >= 5) return;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.font = "40px Arial";
+                ctx.textAlign = "center";
                 ctx.fillText("❤️", heartX, heartY);
                 heartY += speed;
-
                 if (heartY > canvas.height) { heartY = 0; heartX = Math.random() * (canvas.width - 40) + 20; }
                 requestAnimationFrame(animate);
             }
@@ -170,20 +190,18 @@
             const checkHit = (tx, ty) => {
                 const r = canvas.getBoundingClientRect();
                 const x = tx - r.left; const y = ty - r.top;
-                if (Math.abs(x - heartX) < 40 && Math.abs(y - heartY) < 40) {
+                if (Math.abs(x - heartX) < 50 && Math.abs(y - heartY) < 50) {
                     score++;
                     document.getElementById('score').innerText = `Score: ${score} / 5`;
                     heartY = 0; heartX = Math.random() * (canvas.width - 40) + 20;
                     if (score >= 5) nextPage(3);
                 }
             };
-
             canvas.onclick = (e) => checkHit(e.clientX, e.clientY);
-            canvas.ontouchstart = (e) => checkHit(e.touches[0].clientX, e.touches[0].clientY);
+            canvas.ontouchstart = (e) => { e.preventDefault(); checkHit(e.touches[0].clientX, e.touches[0].clientY); };
             animate();
         }
 
-        // RAINING HEARTS
         setInterval(() => {
             const h = document.createElement('div');
             h.classList.add('heart-fall'); h.innerHTML = '❤️';
