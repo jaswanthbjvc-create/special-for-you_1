@@ -31,13 +31,24 @@
             position: relative; z-index: 10;
         }
 
-        /* GIF Styling with Fallback */
         .gif-box { 
-            min-height: 150px; 
+            min-height: 180px; 
             display: flex; justify-content: center; align-items: center; 
-            font-size: 50px;
         }
-        .gif-box img { width: 100%; max-width: 180px; border-radius: 20px; }
+        
+        /* This looks for your uploaded file */
+        .gif-box img { 
+            width: 100%; 
+            max-width: 200px; 
+            border-radius: 20px;
+            animation: bounceIn 1s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
         
         h1 { font-family: 'Dancing Script', cursive; color: #ff4d6d; font-size: 2.2rem; margin: 10px 0; }
         
@@ -50,6 +61,7 @@
         .btn {
             padding: 12px 25px; border: none; border-radius: 50px;
             font-size: 1.1rem; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         #yesBtn { background: #ff4d6d; color: white; }
@@ -68,12 +80,6 @@
         }
 
         .hidden { display: none; }
-        .shake { animation: shake 0.5s; }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
     </style>
 </head>
 <body>
@@ -81,7 +87,7 @@
 
     <div id="page1" class="container">
         <div class="gif-box">
-            <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpndnN6NXR6cnp6cnp6cnp6cnp6cnp6cnp6cnp6cnp6cnp6cnp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/L4lvBpHW2fAXYpSFAp/giphy.gif" alt="❤️">
+            <img src="image1.png" alt="Pookie Bear ❤️">
         </div>
         <h1>Hi Muddu... ❤️</h1>
         <p>I have a secret question... Do you love me?</p>
@@ -101,7 +107,7 @@
     <div id="page3" class="container hidden">
         <div id="quiz-content">
             <div class="gif-box">
-                <img id="quiz-gif" src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3RscW9mYmtndXhyZmx3enR6bnR6bnR6bnR6bnR6bnR6bnR6bnR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdclIYAnYToSx/giphy.gif" alt="❤️">
+                <img id="quiz-gif" src="image1.gif" alt="Quiz Time ❤️">
             </div>
             <h1 id="quiz-q">Question 1</h1>
             <p id="quiz-msg" style="color: #ff4d6d; height: 20px; font-weight: bold;"></p>
@@ -112,7 +118,7 @@
 
     <div id="page4" class="container hidden">
         <div class="gif-box">
-            <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3RscW9mYmtndXhyZmx3enR6bnR6bnR6bnR6bnR6bnR6bnR6bnR6bnR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/m8X6pL8Z0lA6MUM0jN/giphy.gif" alt="❤️">
+            <img src="image1.gif" alt="Love ❤️">
         </div>
         <h1>My Dearest Muddu ❤️</h1>
         <p style="text-align: left; line-height: 1.6; color: #444;">
@@ -149,16 +155,12 @@
         function checkAnswer(isOpt1) {
             const data = quizData[currentQuiz];
             const selected = isOpt1 ? 1 : 2;
-            const content = document.getElementById('quiz-content');
-            
             if(selected === data.correct) {
                 currentQuiz++;
                 if(currentQuiz >= quizData.length) nextPage(4);
                 else loadQuiz();
             } else {
                 document.getElementById('quiz-msg').innerText = "Nahh!! Try again Madam Jii 😉";
-                content.classList.add('shake');
-                setTimeout(() => content.classList.remove('shake'), 500);
             }
         }
 
